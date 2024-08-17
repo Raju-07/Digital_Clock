@@ -1,0 +1,125 @@
+#Digital clock
+
+#Modules
+from customtkinter import *
+import os
+from datetime import *
+from PIL import Image,ImageTk
+
+x=datetime.now()
+
+#Window Appearance
+set_appearance_mode("dark")
+set_default_color_theme("blue")
+
+#For icon
+file_path=os.path.dirname(os.path.realpath(__file__))
+clock_image=CTkImage(Image.open(file_path + "/clock_icon.png"),size=(100,100))    #Use Your image or dawnload this image
+Home_image=CTkImage(Image.open(file_path + "/home.png"),size=(24,24))
+timer_image=CTkImage(Image.open(file_path + "/timer.png"),size=(24,24))
+countdown_image=CTkImage(Image.open(file_path + "/countdown.png"),size=(24,24))
+
+#Creating Window
+app=CTk()
+app.geometry("750x550")
+app.title("Digital Clock")
+#App Label(Header)  
+header=CTkLabel(master=app,
+                text="Digital Clock    ",
+                width=450,
+                height=150,
+                text_color="white",
+                font=("Bradley Hand ITC",75,"italic"),
+                anchor="center",
+                image=clock_image,
+                compound="right")
+header.pack(pady=1,anchor=CENTER)
+
+#Home Window
+clock_frame=CTkFrame(master=app,
+                        width=700,
+                        height=350,
+                        fg_color="#090E1F",
+                        corner_radius=12,
+                        border_width=1,
+                        border_color="white")
+clock_frame.pack(pady=2.4,anchor=CENTER)
+
+#Home / Default screen
+class digiclock:                                   
+    def get_time(self):
+        x=datetime.now()
+        time1=x.strftime("%I:%M:%S")
+        self.current_time.configure(text=time1)
+        self.current_time.after(200,self.get_time)
+
+    def get_date(self):
+        date=x.strftime("%b,%d %Y")
+        self.current_date.configure(text=date)
+        self.current_date.after(200,self.get_date)
+
+    def get_day(self):
+        day=x.strftime("%A")
+        self.day_name.configure(text=day)
+        self.day_name.after(200,self.get_day)
+    day_name=CTkLabel(master=clock_frame,
+                    height=75,
+                    width=250,
+                    text="",
+                    text_color="white",
+                    font=("Bradley Hand ITC",50,"bold"))
+    day_name.place(relx=0.01,rely=0.17)
+
+    current_date=CTkLabel(master=clock_frame,
+                    height=75,
+                    width=250,
+                    text="",
+                    text_color="white",
+                    font=("Bradley Hand ITC",30,"bold"))
+    current_date.place(relx=0.4,rely=0.22)
+
+    current_time=CTkLabel(master=clock_frame,
+                        height=75,
+                        width=400,
+                        text="",
+                        text_color="White",
+                        font=("Bradley Hand ITC",100,"bold"))
+    current_time.place(relx=0.5,rely=0.7,anchor=CENTER)
+
+#Timer
+class Timer(digiclock):
+    def labels(self):
+        hour_label=CTkLabel(master=clock_frame,
+                            text="Hour",
+                            text_color="White",
+                            fg_color="black",
+                            font=("Times New Roman",15,"bold"),
+                            )
+        hour_label.place(relx=0.1,rely=0.1)
+
+        Minute_label=CTkLabel(master=clock_frame,
+                            text="Minute",
+                            text_color="White",
+                            fg_color="black",
+                            font=("Times New Roman",15,"bold"),
+                            )
+        Minute_label.place(relx=0.4,rely=0.1)
+
+        Second_label=CTkLabel(master=clock_frame,
+                            text="Second",
+                            text_color="White",
+                            fg_color="black",
+                            font=("Times New Roman",15,"bold"),
+                            )
+        Second_label.place(relx=0.7,rely=0.1)
+        
+
+
+call_clk=digiclock()
+call_clk.get_date()
+call_clk.get_day()
+call_clk.get_time()
+call_timer=Timer()
+# call_timer.labels()
+
+app.mainloop()
